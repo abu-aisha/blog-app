@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="row">
+    <!-- Left sidebar -->
+    <!-- load the sidebar here -->
+    {% include 'dashboards/sidebar.html' %}
+
+    <!-- Right side content -->
+    <div class="col-md-9">
+      {% if perms.auth.view_user %}
+        <h2>All Users</h2>
+        <a href="{% url 'dashboards:add_user' %}" class="btn btn-dark text-light float-right mb-2">Add User</a>
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Active</th>
+                <th>Staff</th>
+                <th>Superuser</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{% if user.is_active %}<i class="bi bi-check text-success"></i>{% else %}<i class="bi bi-x-fill text-danger"></i>{% endif %}</td>
+                <td>{% if user.is_staff %}<i class="bi bi-check text-success"></i>{% else %}<i class="bi bi-x-fill text-danger"></i>{% endif %}</td>
+                <td>{% if user.is_superuser %}<i class="bi bi-check text-success"></i>{% else %}<i class="bi bi-x-fill text-danger"></i>{% endif %}</td>
+                <td>
+                    <a href="{% url 'dashboards:edit_user' user.id %}"><i class="bi bi-pencil-square text-success"></i></a>
+                    &nbsp;
+                    <a href="{% url 'dashboards:delete_user' user.id %}"><i class="bi bi-trash text-danger"></i></a>
+                </td>
+              </tr>
+            {% endfor %}
+              
+            </tbody>
+          </table>
+          {% else %}
+          <h5>You do not have permission to view this page</h5>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

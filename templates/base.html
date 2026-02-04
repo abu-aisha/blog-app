@@ -1,0 +1,93 @@
+<!-- Header Part -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novavista Blogs</title>
+    <!-- <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+   <style>
+        body::before{
+            display: block;
+            content: '';
+            height: 80px;
+        } /* adds a ghost element between the navbar and body*/ 
+
+
+    </style>
+<body>
+  
+   <nav class="navbar navbar-expand-md fixed-top navbar-dark" style="background-color: rgb(4, 38, 96);"> 
+    
+        <div class="container-fluid">
+            <!-- Navbar Home Content -->
+             
+            <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center">
+                <!-- <img class="w-10 logo rounded-3 border border-3 border-dark" width="200" height="100" src="assets/images/Novavista_logo.png" alt="brand_logo"> -->
+                <h1>Novavista Blog</h1> 
+            </a>
+             
+            
+            <!-- Navbar hamburger toggler -->
+            <button 
+            class="navbar-toggler" 
+            type ="button" 
+            data-bs-toggle="collapse"
+            data-bs-target="#navmenu" ><span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Navbar Menu  -->
+            <div class="collapse navbar-collapse" id="navmenu">
+                <ul class="navbar-nav ms-auto"> 
+                        {% if not user.is_authenticated %}
+                    <li class="nav-item">
+                        <a  href="{% url 'login' %}" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a  href="{% url 'register' %}" class="nav-link">Register</a>
+                    </li>
+                        {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'dashboards:dashboard' %}" class="nav-link">Logged in as <b>{{ user }}</b></a>
+                        
+                    </li>
+                    <li class="nav-item">
+                        <a  href="{% url 'logout' %}" class="nav-link">Logout</a>
+                    </li>
+                        {% endif %}
+                    
+                    <li class="nav-item">
+                        <form action="{% url 'blogs:search' %}" method="GET">
+                          <div class="input-group">
+                          <input class="form-control" type="text" name="keyword" value="{{ keyword }}" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                          <button type="submit" class="btn btn-primary" id="button-search" type="button">Go!</button>
+                          </div>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav> 
+    <!-- <div id="learn" style="height: 200px;"></div> -->
+
+
+<!-- Main Content Part -->
+{% block content %}
+
+{% endblock %}
+
+<!-- Footer Part -->
+<footer class="blog-footer">
+    <!-- <p>Django blog built with 💖 by <a href="#">Rathan Kumar</a></p> -->
+  </footer>
+  <script src="{% static 'js/bootstrap.js' %}"></script>
+  </body>
+  </html>

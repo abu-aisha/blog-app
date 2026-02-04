@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+ <!-- AUTHOR'S OWN POST -->
+<div class="row mt-5">
+    <!-- Left sidebar -->
+    <!-- load the sidebar here -->
+    {% include 'dashboards/sidebar.html' %}
+      <!-- PUBLISHED -->
+    <!-- Right side content -->
+    <div class="col-md-9">
+      <div class="container d-flex flex-column">
+        <div>
+          <h2>Your Posts</h2>
+          <a href="{% url 'dashboards:add_post' %}" class="btn btn-dark text-light float-right mb-2">Add New</a>
+          <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Author</th>
+                  <th>Status</th>
+                  <th>Featured</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for post in posts %}
+              {% if post.status == 'Published' %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ post.title }}</td>
+                  <td>{{ post.category }}</td>
+                  <td>{{ post.author }}</td>
+                  <td>{{ post.status }}</td>
+                  <td>{% if post.is_featured %}<i class="bi bi-check-lg text-success"></i>{% else %}<i class="bi bi-x-circle text-danger"></i>{% endif %}</td>
+                  <td>
+                      <a href="{% url 'dashboards:edit_post' post.id %}"><i class="bi bi-pencil-square text-success"></i></a>
+                      &nbsp;
+                      <a href="{% url 'dashboards:delete_post' post.id %}"><i class="bi bi-trash text-danger"></i></a>
+                  </td>
+                </tr>
+
+                {% endif %}
+                {% endfor %}
+               
+                
+              </tbody>
+          </table>
+        </div>
+     <!-- UNPUBLISHED OR DRAFT POSTS -->
+    <!-- Right side content -->
+            <div class="mt-5" >
+                <h2>Unpublished or draft</h2>
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Author</th>
+                        <th>Status</th>
+                        <th>Featured</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for post in posts %}
+                      {% if post.status != 'Published' %}
+                  
+                      <tr>
+                        <td> {{ forloop.counter }} </td>
+                        <td>{{ post.title }}</td>
+                        <td>{{ post.category }}</td>
+                        <td>{{ post.author }}</td>
+                        <td>{{ post.status }}</td>
+                        <td>{% if post.is_featured %}<i class="bi bi-check-lg text-success"></i>{% else %}<i class="bi bi-x-circle text-danger"></i>{% endif %}</td>
+                        <td>
+                          
+                            <a href="{% url 'dashboards:edit_post' post.id %}"><i class="bi bi-pencil-square text-success"></i></a>
+                            &nbsp;
+                            <a href="{% url 'dashboards:delete_post' post.id %}"><i class="bi bi-trash text-danger"></i></a>
+                         
+                        </td>
+                      </tr>
+                      {% endif %}
+                      {% endfor %}
+                     
+                      
+                    </tbody>
+                  </table>
+            </div>
+      </div>
+    </div>
+</div>
+
+
+{% endblock %}
